@@ -34,16 +34,23 @@ public class ImageKitService {
 
         String dataToSign = token + expire;
 
-        System.out.println("Data To Sign: " + dataToSign);
-
         Mac mac = Mac.getInstance("HmacSHA1");
         SecretKeySpec secretKey =
-                new SecretKeySpec(privateKey.getBytes(StandardCharsets.UTF_8), "HmacSHA1");
+                new SecretKeySpec(privateKey.getBytes("UTF-8"), "HmacSHA1");
 
         mac.init(secretKey);
 
-        byte[] rawHmac = mac.doFinal(dataToSign.getBytes(StandardCharsets.UTF_8));
+        byte[] rawHmac = mac.doFinal(dataToSign.getBytes("UTF-8"));
 
-        return Base64.getEncoder().encodeToString(rawHmac);
+        // ✅ Convert to HEX (ImageKit requirement)
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : rawHmac) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+
+        return hexString.toString();
     }
+
 }
