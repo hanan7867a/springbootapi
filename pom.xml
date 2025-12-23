@@ -19,7 +19,7 @@
     <description>Spring Boot project for ImageKit auth API</description>
 
     <properties>
-        <java.version>25</java.version>
+        <java.version>17</java.version>
     </properties>
 
     <dependencies>
